@@ -1,0 +1,291 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "required": [
+        "ietf-mud:mud",
+        "ietf-access-control-list:access-lists"
+    ],
+  "definitions": {
+	"access-list": {
+		"type": "array",
+		"items": 
+			{
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				}
+			},
+		"required": [
+				"name"
+			]
+			},
+			"required": ["access-list"]
+		
+	},
+	
+        "acl": {
+          "type": "array",
+          "items": 
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "aces" : {"$ref": "#/definitions/aces" }
+              },
+              "required": [
+                "name",
+                "type",
+                "aces"
+              ]
+            }
+          
+        },
+
+	    "aces": {
+                  "type": "object",
+                  "properties": {
+                    "ace" : {"$ref": "#/definitions/ace" }
+                  },
+                  "required": [
+                    "ace"
+                  ]
+        },
+
+		"ace": {
+                    "type": "array",
+                    "items": 
+                     {
+                        "type": "object",
+                        "properties": {
+                           "name": {
+                            "type": "string"
+									},
+                           "matches" : {"$ref": "#/definitions/matches" },
+						"actions" : {"$ref": "#/definitions/actions" }
+                        },
+                          "required": [
+                            "name",
+                            "matches",
+                            "actions"
+                          ]
+                        }
+                      
+        },
+		
+
+		
+		"destination-port": {
+                            "type": "object",
+                            "properties": {
+                                "operator": {
+                                    "type": "string"
+                                },
+                                "port": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": [
+                                "operator",
+                                "port"
+                            ]
+        },
+
+		"matches": {
+                "type": "object",
+                "properties": {
+					"ipv6" : {"$ref": "#/definitions/ipv6" },
+                    "ipv4" : {"$ref": "#/definitions/ipv4" },
+                    "tcp" : {"$ref": "#/definitions/tcp" },
+					"udp" : {"$ref": "#/definitions/udp" },
+					"icmp" : {"$ref": "#/definitions/icmp" },
+					"ietf-mud:mud:" : {"$ref": "#/definitions/ietf-mud:mud:" }
+					
+				}
+		},
+		"ipv4": {
+                "type": "object",
+                "properties": {
+                    "protocol": {
+                        "type": "integer"
+                    },
+                    "ietf-acldns:dst-dnsname": {
+                        "type": "string"
+                    }
+                 },
+                "required": [
+                    "protocol"
+                ]
+         },
+		 
+		"ipv6": {
+                "type": "object",
+                "properties": {
+                    "protocol": {
+                        "type": "integer"
+                    },
+                    "ietf-acldns:dst-dnsname": {
+                        "type": "string"
+                    }
+                 },
+                "required": [
+                    "protocol"
+                ]
+         },
+		 
+		
+		"udp": {
+          		"type": "object",
+                "properties": {
+                    "destination-port" : {"$ref": "#/definitions/destination-port" },
+                    "ietf-mud:direction-initiated": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "destination-port"
+                ]
+        },
+		
+		"icmp": {
+                "type": "object",
+                "properties": {
+                    "destination-port" : {"$ref": "#/definitions/destination-port" },
+                    "ietf-mud:direction-initiated": {
+                        "type": "string"
+                    }
+                }
+        },
+		
+		
+		"ietf-mud:mud:": {
+                "type": "object",
+                "properties": {
+                    "controller": {
+                        "type": "string"
+                    },
+                    "my-controller": {
+                        "type": "string"
+                    },
+                    "manufacturer": {
+                        "type": "string"
+                    },
+                    "same-manufacturer": {
+                        "type": "string"
+                    }
+                }
+        },
+		 
+		 
+		"tcp": {
+                "type": "object",
+                "properties": {
+                    "destination-port" : {"$ref": "#/definitions/destination-port" },
+                    "ietf-mud:direction-initiated": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "destination-port"
+                ]
+        },
+		
+		
+		"actions": {
+                "type": "object",
+                "properties": {
+                    "forwarding": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "forwarding"
+                ]
+        }	
+  },
+  "type": "object",
+  "properties": {
+    "ietf-mud:mud": {
+      "type": "object",
+      "properties": {
+        "mud-version": {
+          "type": "integer"
+        },
+        "mud-url": {
+          "type": "string"
+        },
+        "last-update": {
+          "type": "string"
+        },
+        "cache-validity": {
+          "type": "integer"
+        },
+        "is-supported": {
+          "type": "boolean"
+        },
+        "systeminfo": {
+          "type": "string"
+        },
+        "from-device-policy": {
+          "type": "object",
+          "properties": {
+            "access-lists": {
+              "type": "object",
+              "properties": {
+                "access-list": {"$ref": "#/definitions/access-list" }
+              },
+              "required": [
+                "access-list"
+              ]
+            }
+          },
+          "required": [
+            "access-lists"
+          ]
+        },
+		"to-device-policy": {
+          "type": "object",
+          "properties": {
+            "access-lists": {
+              "type": "object",
+              "properties": {
+                "access-list": {"$ref": "#/definitions/access-list" }
+              },
+              "required": [
+                "access-list"
+              ]
+            }
+          },
+          "required": [
+            "access-lists"
+          ]
+        }
+      },
+      "required": [
+        "mud-version",
+        "mud-url",
+        "last-update",
+        "cache-validity",
+        "is-supported",
+        "systeminfo",
+        "from-device-policy",
+		"to-device-policy"
+      ]
+    },
+      
+	"ietf-access-control-list:access-lists": {
+      "type": "object",
+      "properties": {
+		"acl" : {"$ref": "#/definitions/acl" }
+	  },
+      "required": [
+        "acl"
+      ]
+    }
+  }
+  
+}
